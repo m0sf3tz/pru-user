@@ -9,5 +9,6 @@
 #define PRU_COPY_INSTRUCTIONS    _IOW(PRU_IOC_MAGIC, 3, int)
 #define PRU_COPY_DATA            _IOW(PRU_IOC_MAGIC, 4, int)
 #define PRU_START_EXECUTING      _IO (PRU_IOC_MAGIC, 5)
+#define PRU_UART_CONFIGURE_PINS  _IO (PRU_IOC_MAGIC, 6)
 
 #endif

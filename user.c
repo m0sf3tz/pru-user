@@ -6,11 +6,7 @@
 #include <sys/ioctl.h>
 #include "pru_ioctl.h"
  
-#define DATA_LENGHT 2048
-
-
-
-
+#define DATA_INSTRUCTION_LENGHT 8192
 
 int main(int argc, char *argv[])
 {
@@ -18,8 +14,8 @@ int main(int argc, char *argv[])
     char * i_name    = "instructions.bin";
     char * d_name    = "data.bin";
     
-    unsigned char ibuf[2048];
-    unsigned char dbuf[2048];
+    unsigned char ibuf[DATA_INSTRUCTION_LENGHT];
+    unsigned char dbuf[DATA_INSTRUCTION_LENGHT];
     
     FILE * fd;
     FILE * fdbi;
@@ -51,20 +47,6 @@ int main(int argc, char *argv[])
 
     fread(ibuf,sizeof(ibuf),1,fdbi);
     fread(dbuf,sizeof(dbuf),1,fdbd);
-
-/////
-    #if 0
-    tmp = 0;
-    while(tmp!=2000)
-    {
-        dbuf[tmp] = 0xA5;
-        tmp++;
-    }
-    #endif 
-/////
-
-    //int fp = fopen("file.txt", "wb+");
-    //fwrite(dbuf, sizeof(char), sizeof(dbuf), fp);
  
     int q;
 
@@ -79,8 +61,11 @@ int main(int argc, char *argv[])
     printf("Copying Data\n"); 
 
     ioctl(fd, PRU_COPY_DATA, &dbuf);
+    
+    printf("Enabling PRU0 UART pins and clocks\n"); 
 
-    //fclose(fp);
+    ioctl(fd, PRU_UART_CONFIGURE_PINS, &q);
+
     close(fd);
     fclose(fdbi);
     fclose(fdbd);
